@@ -1,3 +1,5 @@
+#include <string.h>
+#include <stdio.h>
 #include "Node.hh"
 
 int Node::labels;
