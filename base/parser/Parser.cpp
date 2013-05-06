@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Parser.hh"
 
 Parser::Parser(Lexer ** l)
