@@ -3,7 +3,4 @@ int main(){
 	int b;
 	a = 20;
 	b = 30;
-	while(a < b){
-		a = a + 1;
-	}
 }

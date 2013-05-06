@@ -28,6 +28,16 @@ void Parser::program() { // Program -> Block
 
 /* GRAMMAR METHODS */
 Stmt * Parser::block() { // Block -> { DD SS }
+  match('i');
+  match('n');
+  match('t');
+  match(' ');
+  match('m');
+  match('a');
+  match('i');
+  match('n');
+  match('(');
+  match(')');
   match('{');
   Env * savedEnv = this->top;
   this->top = new Env(this->top);
