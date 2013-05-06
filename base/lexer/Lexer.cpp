@@ -22,6 +22,17 @@ Lexer::Lexer()
   this->reserve(Word::False);
   this->reserve(Type::Int);
   this->reserve(Type::Bool);
+  this->readch(); //i
+  this->readch(); //n
+  this->readch(); //t
+  this->readch(); // 
+  this->readch(); //m
+  this->readch(); //a
+  this->readch(); //i
+  this->readch(); //n
+  this->readch(); //(
+  this->readch(); //)
+  this->readch(); // :)
 }
 
 Lexer::~Lexer()
