@@ -180,8 +180,6 @@ pre_order (struct Node* node, VoidNode ** ast) {
     //     statement_list = false;
     // }
 
-    
-
     if( eq ( (char *)node->data, "PROGRAM" ) ) {
     } else if ( eq ( (char *)node->data, "#" ) ) {    
     } else if ( eq ( (char *)node->data, "MAIN_DEF" ) ) {    
