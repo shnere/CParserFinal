@@ -493,7 +493,7 @@ int anasin(){
 		// Si es D#
 		if (actual.tipo == ACEPTA) {
 			imprimeFormato(3, i, -1);
-			pre_order(root, &ast);
+			//pre_order(root, &ast);
       //printCharList(&ast);
 			return 0;
 		} else if (actual.tipo == D) {
