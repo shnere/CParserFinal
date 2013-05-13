@@ -3,3 +3,4 @@ cp $1 base
 cd orig
 ./symbol.out $1
 cat cuadruples.txt
+java -jar ../simulator.jar
