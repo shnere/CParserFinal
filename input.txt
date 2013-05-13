@@ -1,4 +1,5 @@
 int main(){
+<<<<<<< HEAD
 	int a;
 	int b;
 	int c;
@@ -11,4 +12,18 @@ int main(){
 	while(a<b){
 		a = a + 1;
 	}
+=======
+ int a;
+ int b;
+ int c;
+ a = 10;
+ b = 20;
+ c = a + b + 1;
+ if(c == 30){
+ 	c = c + 1;
+ }
+ while(a<b){
+ 	a = a + 1;
+ }
+>>>>>>> a710c83f344140f77a52805d3d80460bb1a7aff7
 }

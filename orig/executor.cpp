@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
           // return 0 Cadena aceptada
           char *_args[] = { (char*)_s.c_str(), (char*)_ss.c_str(), "cparser.out", argv[1], NULL };
           int fd;
-          if((fd = open("cuadruples.txt", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR)) == -1){ 
+          if((fd = open("cuadruples.txt", O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR)) == -1){ 
             perror("open");
             return 1;
           }
