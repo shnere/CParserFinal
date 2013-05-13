@@ -4,11 +4,7 @@ int main(){
 	int c;
 	a = 10;
 	b = 20;
-	c = a + b + 1;
-	if(c == 30){
+	if(c == 30 && b < 2){
 		c = c + 1;
-	}
-	while(a<b){
-		a = a + 1;
 	}
 }
