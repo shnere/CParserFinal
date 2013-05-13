@@ -480,8 +480,8 @@ int anasin(){
     
 	while (1) {
         // Arbol
-        fprintf(stdout, "\n--<Arbol Sintactico>--\n");
-        traverse_node(root, print_string);
+        //fprintf(stdout, "\n--<Arbol Sintactico>--\n");
+        //traverse_node(root, print_string);
         
 		// Toma primer elemento
 		aux = convierteAString(top(&pila));
@@ -493,7 +493,9 @@ int anasin(){
 		// Si es D#
 		if (actual.tipo == ACEPTA) {
 			imprimeFormato(3, i, -1);
-			pre_order(root, &ast);
+            fprintf(stdout, "\n--<Arbol Sintactico>--\n");
+            traverse_node(root, print_string);
+			//pre_order(root, &ast);
       //printCharList(&ast);
 			return 0;
 		} else if (actual.tipo == D) {
@@ -689,7 +691,7 @@ int anasin(){
 		}
 		//fprintf(stdout, "pila:%s\n",imprimePila(ret));
         fprintf(stdout, "\n-------------------------------------------\n");
-        traverse_node(root, print_string);
+        //traverse_node(root, print_string);
 	}
 
 

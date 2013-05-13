@@ -1,0 +1,1232 @@
+
+
+-----Ejectuando Analizador Lexico-----
+
+int	int
+main	main
+(	left_parenthesis
+)	right_parenthesis
+{	left_curly_bracket
+int	int
+a	var_name
+;	semi_colon
+int	int
+b	var_name
+;	semi_colon
+int	int
+c	var_name
+;	semi_colon
+a	var_name
+=	equal
+10	int_literal
+;	semi_colon
+b	var_name
+=	equal
+20	int_literal
+;	semi_colon
+c	var_name
+=	equal
+a	var_name
++	arith_op
+b	var_name
++	arith_op
+1	int_literal
+;	semi_colon
+if	if
+(	left_parenthesis
+c	var_name
+==	rel_op
+30	int_literal
+)	right_parenthesis
+{	left_curly_bracket
+c	var_name
+=	equal
+c	var_name
++	arith_op
+1	int_literal
+;	semi_colon
+}	right_curly_bracket
+while	while
+(	left_parenthesis
+a	var_name
+<	rel_op
+b	var_name
+)	right_parenthesis
+{	left_curly_bracket
+a	var_name
+=	equal
+a	var_name
++	arith_op
+1	int_literal
+;	semi_colon
+}	right_curly_bracket
+}	right_curly_bracket
+
+*******TOKENS*******
+Existen 3 tokens:
+0:	 Nombre: a 	 Tipo:  	 Valor: 
+1:	 Nombre: b 	 Tipo:  	 Valor: 
+2:	 Nombre: c 	 Tipo:  	 Valor: 
+
+
+-----Ejectuando Analizador Sintactico-----
+
+		PASOS DE LA PILA                                            
+
+PILA:	$ 0 
+ENTRADA:int main ( ) { int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D1
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 
+ENTRADA:main ( ) { int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D4
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 
+ENTRADA:( ) { int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D5
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 
+ENTRADA:) { int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D6
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 
+ENTRADA:{ int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D7
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 
+ENTRADA:int a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D9
+
+
+-------------------------------------------
+
+AGREGA:int
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 VAR_TYPE 13 
+ENTRADA:a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R3: VAR_TYPE->int
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 VAR_TYPE 13 
+ENTRADA:a ; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D34
+
+
+-------------------------------------------
+
+Hago reduccion VAR_ITEM -> var_name
+ 
+inputReal[i-1]: a
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 VAR_TYPE 13 VAR_ITEM 35 
+ENTRADA:; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R7: VAR_ITEM->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R6: VAR_LIST->VAR_ITEM
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D50
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 
+ENTRADA:int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R2: DECLARATION->VAR_TYPEVAR_LISTsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 
+ENTRADA:int b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D9
+
+
+-------------------------------------------
+
+AGREGA:int
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 VAR_TYPE 13 
+ENTRADA:b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R3: VAR_TYPE->int
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 VAR_TYPE 13 
+ENTRADA:b ; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D34
+
+
+-------------------------------------------
+
+Hago reduccion VAR_ITEM -> var_name
+ 
+inputReal[i-1]: b
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 VAR_TYPE 13 VAR_ITEM 35 
+ENTRADA:; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R7: VAR_ITEM->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R6: VAR_LIST->VAR_ITEM
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D50
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 
+ENTRADA:int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R2: DECLARATION->VAR_TYPEVAR_LISTsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 
+ENTRADA:int c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D9
+
+
+-------------------------------------------
+
+AGREGA:int
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 VAR_TYPE 13 
+ENTRADA:c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R3: VAR_TYPE->int
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 VAR_TYPE 13 
+ENTRADA:c ; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D34
+
+
+-------------------------------------------
+
+Hago reduccion VAR_ITEM -> var_name
+ 
+inputReal[i-1]: c
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 VAR_TYPE 13 VAR_ITEM 35 
+ENTRADA:; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R7: VAR_ITEM->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R6: VAR_LIST->VAR_ITEM
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 VAR_TYPE 13 VAR_LIST 36 
+ENTRADA:; a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D50
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 DECLARATION 10 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R2: DECLARATION->VAR_TYPEVAR_LISTsemi_colon
+
+
+-------------------------------------------
+
+Deriva a epsilon, agrega el terminal como hijo de /...
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 DECLARATION 10 INTERNAL_DECLARATIONS 14 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R11: INTERNAL_DECLARATIONS->epsilon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 DECLARATION 10 INTERNAL_DECLARATIONS 14 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R10: INTERNAL_DECLARATIONS->DECLARATIONINTERNAL_DECLARATIONS
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 DECLARATION 10 INTERNAL_DECLARATIONS 14 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R10: INTERNAL_DECLARATIONS->DECLARATIONINTERNAL_DECLARATIONS
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R10: INTERNAL_DECLARATIONS->DECLARATIONINTERNAL_DECLARATIONS
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 
+ENTRADA:a = 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 var_name 22 
+ENTRADA:= 10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D41
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 var_name 22 equal 41 
+ENTRADA:10 ; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 var_name 22 equal 41 CONSTANT 26 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 var_name 22 equal 41 PRIMARY_EXPR 29 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+
+AGREGA:equal
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 ASSIGN_EXP 24 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R25: ASSIGN_EXP->var_nameequalBINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 EXPRESSION 27 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 EXPRESSION 27 
+ENTRADA:; b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D47
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 
+ENTRADA:b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R15: STATEMENT->EXPRESSIONsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 
+ENTRADA:b = 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 var_name 22 
+ENTRADA:= 20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D41
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 var_name 22 equal 41 
+ENTRADA:20 ; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 var_name 22 equal 41 CONSTANT 26 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 var_name 22 equal 41 PRIMARY_EXPR 29 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+
+AGREGA:equal
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 ASSIGN_EXP 24 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R25: ASSIGN_EXP->var_nameequalBINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 EXPRESSION 27 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 EXPRESSION 27 
+ENTRADA:; c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D47
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 
+ENTRADA:c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R15: STATEMENT->EXPRESSIONsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 
+ENTRADA:c = a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 
+ENTRADA:= a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D41
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 
+ENTRADA:a + b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D54
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 PRIMARY_EXPR 29 
+ENTRADA:+ b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D43
+
+
+-------------------------------------------
+
+AGREGA:arith_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R31: BINARY_OP->arith_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:b + 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D54
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:+ 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D43
+
+
+-------------------------------------------
+
+AGREGA:arith_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R31: BINARY_OP->arith_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 CONSTANT 26 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+
+AGREGA:equal
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 ASSIGN_EXP 24 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R25: ASSIGN_EXP->var_nameequalBINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 EXPRESSION 27 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 EXPRESSION 27 
+ENTRADA:; if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D47
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 
+ENTRADA:if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R15: STATEMENT->EXPRESSIONsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 
+ENTRADA:if ( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D19
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 
+ENTRADA:( c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D38
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 
+ENTRADA:c == 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 PRIMARY_EXPR 29 
+ENTRADA:== 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 
+ENTRADA:== 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 
+ENTRADA:== 30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D45
+
+
+-------------------------------------------
+
+AGREGA:rel_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 BINARY_OP 46 
+ENTRADA:30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R30: BINARY_OP->rel_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 BINARY_OP 46 
+ENTRADA:30 ) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 BINARY_OP 46 CONSTANT 26 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 BINARY_EXP 25 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 ASSIGN_EXP 24 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R26: ASSIGN_EXP->BINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 
+ENTRADA:) { c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D59
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 
+ENTRADA:{ c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D61
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 
+ENTRADA:c = c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 
+ENTRADA:= c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D41
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 
+ENTRADA:c + 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D54
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 PRIMARY_EXPR 29 
+ENTRADA:+ 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D43
+
+
+-------------------------------------------
+
+AGREGA:arith_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R31: BINARY_OP->arith_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 CONSTANT 26 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+
+AGREGA:equal
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 ASSIGN_EXP 24 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R25: ASSIGN_EXP->var_nameequalBINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 EXPRESSION 27 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 EXPRESSION 27 
+ENTRADA:; } while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D47
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 STATEMENT 63 
+ENTRADA:} while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R15: STATEMENT->EXPRESSIONsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 if 19 left_parenthesis 38 EXPRESSION 52 right_parenthesis 59 left_curly_bracket 61 STATEMENT 63 
+ENTRADA:} while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D65
+
+
+-------------------------------------------
+
+AGREGA:right_curly_bracket
+
+AGREGA:left_curly_bracket
+
+AGREGA:right_parenthesis
+
+AGREGA:left_parenthesis
+
+AGREGA:if
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 IF_STATEMENT 28 
+ENTRADA:while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R20: IF_STATEMENT->ifleft_parenthesisEXPRESSIONright_parenthesisleft_curly_bracketSTATEMENTright_curly_bracket
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 
+ENTRADA:while ( a < b ) { a = a + 1 ; } } $ 
+ACCION: R14: STATEMENT->IF_STATEMENT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 
+ENTRADA:while ( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D23
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 
+ENTRADA:( a < b ) { a = a + 1 ; } } $ 
+ACCION:	D42
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 
+ENTRADA:a < b ) { a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 PRIMARY_EXPR 29 
+ENTRADA:< b ) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 
+ENTRADA:< b ) { a = a + 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 
+ENTRADA:< b ) { a = a + 1 ; } } $ 
+ACCION:	D45
+
+
+-------------------------------------------
+
+AGREGA:rel_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 BINARY_OP 46 
+ENTRADA:b ) { a = a + 1 ; } } $ 
+ACCION: R30: BINARY_OP->rel_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 BINARY_OP 46 
+ENTRADA:b ) { a = a + 1 ; } } $ 
+ACCION:	D54
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:) { a = a + 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 BINARY_EXP 25 
+ENTRADA:) { a = a + 1 ; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 ASSIGN_EXP 24 
+ENTRADA:) { a = a + 1 ; } } $ 
+ACCION: R26: ASSIGN_EXP->BINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 
+ENTRADA:) { a = a + 1 ; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 
+ENTRADA:) { a = a + 1 ; } } $ 
+ACCION:	D60
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 
+ENTRADA:{ a = a + 1 ; } } $ 
+ACCION:	D62
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 
+ENTRADA:a = a + 1 ; } } $ 
+ACCION:	D22
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 
+ENTRADA:= a + 1 ; } } $ 
+ACCION:	D41
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 
+ENTRADA:a + 1 ; } } $ 
+ACCION:	D54
+
+
+-------------------------------------------
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 PRIMARY_EXPR 29 
+ENTRADA:+ 1 ; } } $ 
+ACCION: R32: PRIMARY_EXPR->var_name
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; } } $ 
+ACCION: R28: BINARY_EXP->PRIMARY_EXPR
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:+ 1 ; } } $ 
+ACCION:	D43
+
+
+-------------------------------------------
+
+AGREGA:arith_op
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; } } $ 
+ACCION: R31: BINARY_OP->arith_op
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 
+ENTRADA:1 ; } } $ 
+ACCION:	D20
+
+
+-------------------------------------------
+
+AGREGA:int_literal
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 CONSTANT 26 
+ENTRADA:; } } $ 
+ACCION: R35: CONSTANT->int_literal
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 BINARY_OP 46 PRIMARY_EXPR 57 
+ENTRADA:; } } $ 
+ACCION: R33: PRIMARY_EXPR->CONSTANT
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 var_name 22 equal 41 BINARY_EXP 55 
+ENTRADA:; } } $ 
+ACCION: R27: BINARY_EXP->BINARY_EXPBINARY_OPPRIMARY_EXPR
+
+
+-------------------------------------------
+
+AGREGA:equal
+
+AGREGA:var_name
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 ASSIGN_EXP 24 
+ENTRADA:; } } $ 
+ACCION: R25: ASSIGN_EXP->var_nameequalBINARY_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 EXPRESSION 27 
+ENTRADA:; } } $ 
+ACCION: R24: EXPRESSION->ASSIGN_EXP
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 EXPRESSION 27 
+ENTRADA:; } } $ 
+ACCION:	D47
+
+
+-------------------------------------------
+
+AGREGA:semi_colon
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 STATEMENT 64 
+ENTRADA:} } $ 
+ACCION: R15: STATEMENT->EXPRESSIONsemi_colon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 while 23 left_parenthesis 42 EXPRESSION 56 right_parenthesis 60 left_curly_bracket 62 STATEMENT 64 
+ENTRADA:} } $ 
+ACCION:	D66
+
+
+-------------------------------------------
+
+AGREGA:right_curly_bracket
+
+AGREGA:left_curly_bracket
+
+AGREGA:right_parenthesis
+
+AGREGA:left_parenthesis
+
+AGREGA:while
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 WHILE_STATEMENT 33 
+ENTRADA:} $ 
+ACCION: R19: WHILE_STATEMENT->whileleft_parenthesisEXPRESSIONright_parenthesisleft_curly_bracketSTATEMENTright_curly_bracket
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 
+ENTRADA:} $ 
+ACCION: R16: STATEMENT->WHILE_STATEMENT
+
+
+-------------------------------------------
+
+Deriva a epsilon, agrega el terminal como hijo de /...
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT_LIST 48 
+ENTRADA:} $ 
+ACCION: R13: STATEMENT_LIST->epsilon
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT_LIST 48 
+ENTRADA:} $ 
+ACCION: R12: STATEMENT_LIST->STATEMENTSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT 31 STATEMENT_LIST 48 
+ENTRADA:} $ 
+ACCION: R12: STATEMENT_LIST->STATEMENTSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT 31 STATEMENT_LIST 48 
+ENTRADA:} $ 
+ACCION: R12: STATEMENT_LIST->STATEMENTSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT 31 STATEMENT_LIST 48 
+ENTRADA:} $ 
+ACCION: R12: STATEMENT_LIST->STATEMENTSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 INTERNAL_DECLARATIONS 12 STATEMENT_LIST 32 
+ENTRADA:} $ 
+ACCION: R12: STATEMENT_LIST->STATEMENTSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 FUNCTION_BODY 11 
+ENTRADA:} $ 
+ACCION: R9: FUNCTION_BODY->INTERNAL_DECLARATIONSSTATEMENT_LIST
+
+
+-------------------------------------------
+PILA:	$ 0 int 1 main 4 left_parenthesis 5 right_parenthesis 6 left_curly_bracket 7 FUNCTION_BODY 11 
+ENTRADA:} $ 
+ACCION:	D15
+
+
+-------------------------------------------
+
+AGREGA:right_curly_bracket
+
+AGREGA:left_curly_bracket
+
+AGREGA:right_parenthesis
+
+AGREGA:left_parenthesis
+
+AGREGA:main
+
+AGREGA:int
+PILA:	$ 0 MAIN_DEF 2 
+ENTRADA:$ 
+ACCION: R8: MAIN_DEF->intmainleft_parenthesisright_parenthesisleft_curly_bracketFUNCTION_BODYright_curly_bracket
+
+
+-------------------------------------------
+PILA:	$ 0 PROGRAM 3 
+ENTRADA:$ 
+ACCION: R1: PROGRAM->MAIN_DEF
+
+
+-------------------------------------------
+PILA:	$ 0 PROGRAM 3 
+ENTRADA:$ 
+Cadena Aceptada
+
+
+--<Arbol Sintactico>--
+#
+`-- PROGRAM
+    `-- MAIN_DEF
+        |-- right_curly_bracket
+        |-- FUNCTION_BODY
+        |   |-- STATEMENT_LIST
+        |   |   |-- STATEMENT_LIST
+        |   |   |   |-- STATEMENT_LIST
+        |   |   |   |   |-- STATEMENT_LIST
+        |   |   |   |   |   |-- STATEMENT_LIST
+        |   |   |   |   |   |   |-- STATEMENT_LIST
+        |   |   |   |   |   |   `-- STATEMENT
+        |   |   |   |   |   |       |-- semi_colon
+        |   |   |   |   |   |       `-- EXPRESSION
+        |   |   |   |   |   |           `-- ASSIGN_EXP
+        |   |   |   |   |   |               |-- BINARY_EXP
+        |   |   |   |   |   |               |   |-- PRIMARY_EXPR
+        |   |   |   |   |   |               |   |   `-- CONSTANT
+        |   |   |   |   |   |               |   |       `-- int_literal
+        |   |   |   |   |   |               |   |-- BINARY_OP
+        |   |   |   |   |   |               |   |   `-- arith_op
+        |   |   |   |   |   |               |   `-- BINARY_EXP
+        |   |   |   |   |   |               |       |-- PRIMARY_EXPR
+        |   |   |   |   |   |               |       |   `-- var_name
+        |   |   |   |   |   |               |       |-- BINARY_OP
+        |   |   |   |   |   |               |       |   `-- arith_op
+        |   |   |   |   |   |               |       `-- BINARY_EXP
+        |   |   |   |   |   |               |           `-- PRIMARY_EXPR
+        |   |   |   |   |   |               |           |   `-- var_name
+        |   |   |   |   |   |               |-- equal
+        |   |   |   |   |   |               `-- var_name
+        |   |   |   |   |   `-- STATEMENT
+        |   |   |   |   |       |-- semi_colon
+        |   |   |   |   |       `-- EXPRESSION
+        |   |   |   |   |       |   `-- ASSIGN_EXP
+        |   |   |   |   |       |   |   `-- BINARY_EXP
+        |   |   |   |   |       |   |   |   |-- PRIMARY_EXPR
+        |   |   |   |   |       |   |   |       `-- CONSTANT
+        |   |   |   |   |       |   |   |       |   `-- int_literal
+        |   |   |   |   |       |   |   |   |-- BINARY_OP
+        |   |   |   |   |       |   |   |       `-- rel_op
+        |   |   |   |   |       |   |   |   `-- BINARY_EXP
+        |   |   |   |   |       |   |   |   |   `-- PRIMARY_EXPR
+        |   |   |   |   |       |   |   |   |   |   `-- var_name
+        |   |   |   |   `-- STATEMENT
+        |   |   |   |       `-- IF_STATEMENT
+        |   |   |   |       |   |-- right_curly_bracket
+        |   |   |   |       |   |-- STATEMENT
+        |   |   |   |       |   |   |-- semi_colon
+        |   |   |   |       |   |   `-- EXPRESSION
+        |   |   |   |       |   |       `-- ASSIGN_EXP
+        |   |   |   |       |   |           |-- BINARY_EXP
+        |   |   |   |       |   |           |   `-- PRIMARY_EXPR
+        |   |   |   |       |   |           |       `-- CONSTANT
+        |   |   |   |       |   |           |       |   `-- int_literal
+        |   |   |   |       |   |           |-- equal
+        |   |   |   |       |   |           `-- var_name
+        |   |   |   |       |   |-- left_curly_bracket
+        |   |   |   |       |   |-- right_parenthesis
+        |   |   |   |       |   |-- EXPRESSION
+        |   |   |   |       |   |   `-- ASSIGN_EXP
+        |   |   |   |       |   |   |   |-- BINARY_EXP
+        |   |   |   |       |   |   |       |-- PRIMARY_EXPR
+        |   |   |   |       |   |   |           `-- CONSTANT
+        |   |   |   |       |   |   |           |   `-- int_literal
+        |   |   |   |       |   |   |       |-- BINARY_OP
+        |   |   |   |       |   |   |           `-- arith_op
+        |   |   |   |       |   |   |       `-- BINARY_EXP
+        |   |   |   |       |   |   |       |   `-- PRIMARY_EXPR
+        |   |   |   |       |   |   |       |   |   `-- var_name
+        |   |   |   |       |   |   |   |-- equal
+        |   |   |   |       |   |   |   `-- var_name
+        |   |   |   |       |   |-- left_parenthesis
+        |   |   |   |       |   `-- if
+        |   |   |   `-- STATEMENT
+        |   |   |       |-- semi_colon
+        |   |   |       `-- EXPRESSION
+        |   |   |       |   `-- ASSIGN_EXP
+        |   |   |       |       `-- BINARY_EXP
+        |   |   |       |       |   |-- PRIMARY_EXPR
+        |   |   |       |       |   |   `-- var_name
+        |   |   |       |       |   |-- BINARY_OP
+        |   |   |       |       |   |   `-- rel_op
+        |   |   |       |       |   `-- BINARY_EXP
+        |   |   |       |       |       `-- PRIMARY_EXPR
+        |   |   |       |       |           `-- var_name
+        |   |   `-- STATEMENT
+        |   |       `-- WHILE_STATEMENT
+        |   |       |   |-- right_curly_bracket
+        |   |       |   |-- STATEMENT
+        |   |       |   |   |-- semi_colon
+        |   |       |   |   `-- EXPRESSION
+        |   |       |   |   |   `-- ASSIGN_EXP
+        |   |       |   |   |       |-- BINARY_EXP
+        |   |       |   |   |           `-- PRIMARY_EXPR
+        |   |       |   |   |           |   `-- CONSTANT
+        |   |       |   |   |           |   |   `-- int_literal
+        |   |       |   |   |       |-- equal
+        |   |       |   |   |       `-- var_name
+        |   |       |   |-- left_curly_bracket
+        |   |       |   |-- right_parenthesis
+        |   |       |   |-- EXPRESSION
+        |   |       |   |   `-- ASSIGN_EXP
+        |   |       |   |       |-- BINARY_EXP
+        |   |       |   |           |-- PRIMARY_EXPR
+        |   |       |   |           |   `-- CONSTANT
+        |   |       |   |           |       `-- int_literal
+        |   |       |   |           |-- BINARY_OP
+        |   |       |   |           |   `-- arith_op
+        |   |       |   |           `-- BINARY_EXP
+        |   |       |   |               `-- PRIMARY_EXPR
+        |   |       |   |                   `-- var_name
+        |   |       |   |       |-- equal
+        |   |       |   |       `-- var_name
+        |   |       |   |-- left_parenthesis
+        |   |       |   `-- while
+        |   `-- INTERNAL_DECLARATIONS
+        |       |-- INTERNAL_DECLARATIONS
+        |           |-- INTERNAL_DECLARATIONS
+        |           |   |-- INTERNAL_DECLARATIONS
+        |           |   `-- DECLARATION
+        |           |   |   |-- semi_colon
+        |           |   |   |-- VAR_LIST
+        |           |   |       `-- VAR_ITEM
+        |           |   |           `-- var_name
+        |           |   |   `-- VAR_TYPE
+        |           |   |   |   `-- int
+        |           `-- DECLARATION
+        |               |-- semi_colon
+        |               |-- VAR_LIST
+        |               |   `-- VAR_ITEM
+        |               |       `-- var_name
+        |               `-- VAR_TYPE
+        |                   `-- int
+        |       `-- DECLARATION
+        |       |   |-- semi_colon
+        |       |   |-- VAR_LIST
+        |       |       `-- VAR_ITEM
+        |       |       |   `-- var_name
+        |       |   `-- VAR_TYPE
+        |       |   |   `-- int
+        |-- left_curly_bracket
+        |-- right_parenthesis
+        |-- left_parenthesis
+        |-- main
+        `-- int
+
