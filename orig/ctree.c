@@ -195,9 +195,9 @@ pre_order (struct Node* node, VoidNode ** ast) {
     } else if ( eq ( (char *)node->data, "STATEMENT" ) ) {        
     } else if ( eq ( (char *)node->data, "EXPRESSION" ) ) {    
     } else if ( eq ( (char *)node->data, "IF_STATEMENT" ) ) {
-        printf("[IFT, T%d, GOTO L%d]\n", rel_counter, rel_counter);
+        printf("( IFT, T%d, GOTO L%d )\n", rel_counter, rel_counter);
     } else if ( eq ( (char *)node->data, "WHILE_STATEMENT" ) ) {    
-        printf("[LABEL, , , L%d]\n", ++rel_counter);
+        printf("( LABEL, , , L%d )\n", ++rel_counter);
         
     } else if ( eq ( (char *)node->data, "RETURN_STATEMENT" ) ) {    
     } else if ( eq ( (char *)node->data, "ASSIGN_EXP" ) ) {    
@@ -211,7 +211,7 @@ pre_order (struct Node* node, VoidNode ** ast) {
         //todo, checar el caso numero + numero
         //todo, +,-,* instead of arith_op
         sprintf(Tn, "T%d", counter++);
-        printf("[%s, %s, %s, T%d]\n", (char*) node->firstchild->data, (char *)node->prevsibling->firstchild->data, (char *)node->nextsibling->firstchild->firstchild->data, counter);
+        printf("( %s, %s, %s, T%d)\n", (char*) node->firstchild->data, (char *)node->prevsibling->firstchild->data, (char *)node->nextsibling->firstchild->firstchild->data, counter);
         if ( eq ( (char *)node->data, "rel_op" ) ) {
             rel_counter = counter - 1;
         }
