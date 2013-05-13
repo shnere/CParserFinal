@@ -189,7 +189,8 @@ int main (int argc, const char * argv[]) {
     
     // Correr anasin
     fprintf(stdout, "\n-----Ejectuando Analizador Sintactico-----\n\n");
-    anasin();
+    int statusAnasin;
+    statusAnasin = anasin();
     fprintf(stdout, "\n");
 	//imprimeTokens();
     reset(automatas);
@@ -199,12 +200,12 @@ int main (int argc, const char * argv[]) {
     // Si hay error salir
     if (errorSintactico == 1) {
         clear(&pila);
-        return EXIT_SUCCESS;
+        return -1;
     }
 
 	
 	fclose(fuente);
 	
-    return 0;
+    return statusAnasin;
 }
 
