@@ -27,9 +27,6 @@ int main(int argc, char *argv[])
     _b << (char) _1 << (char) _2 << (char) _3 << (char) _4;
     _c << (char) _5 << (char) _6 << (char) _7 << (char) _8;
     std::string _s(_b.str()); std::string _ss(_c.str());
-
-    //char *_args[] = { (char*)_s.c_str(), (char*)_ss.c_str(), "cparser.out", argv[1], NULL };
-    //execvp(_args[0], &_args[0]);
     
     pid_t child_pid; 
     int status;
@@ -41,10 +38,10 @@ int main(int argc, char *argv[])
         wait(&status);
         if (status == 65280){
           // return -1  Cadena no aceptada
-          printf("Cadena NO aceptada\n");
         } else if(status == 0) {
           // return 0 Cadena aceptada
-          printf("Cadena aceptada\n");
+          char *_args[] = { (char*)_s.c_str(), (char*)_ss.c_str(), "cparser.out", argv[1], NULL };
+          execvp(_args[0], &_args[0]);
         }
         return 0;        
         
