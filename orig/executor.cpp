@@ -7,9 +7,10 @@ $ ./a.out input.txt
 #include <sys/wait.h>
 #include <unistd.h> 
 #include <stdio.h>
-#include <unistd.h>
 #include <sstream>
 #include <string>
+#include <fcntl.h>
+
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,14 @@ int main(int argc, char *argv[])
         } else if(status == 0) {
           // return 0 Cadena aceptada
           char *_args[] = { (char*)_s.c_str(), (char*)_ss.c_str(), "cparser.out", argv[1], NULL };
+          int fd;
+          if((fd = open("cuadruples.txt", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR)) == -1){ 
+            perror("open");
+            return 1;
+          }
+          dup2(fd,STDOUT_FILENO); // Redireccionando como campeón stdout
+          dup2(fd,STDERR_FILENO); // y tmb stderr because YOLO
+          close(fd);
           execvp(_args[0], &_args[0]);
         }
         return 0;        
